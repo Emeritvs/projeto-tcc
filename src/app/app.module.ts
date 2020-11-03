@@ -9,17 +9,22 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ComponentsModule } from './components/components.module';
+import { NgxFaceApiJsModule } from 'ngx-face-api-js';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   entryComponents: [],
   imports: [
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    NgxFaceApiJsModule.forRoot({
+      modelsUrl: 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights',
+    })
   ],
   providers: [
     StatusBar,

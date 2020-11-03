@@ -12,18 +12,21 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'home',
     pathMatch: 'full'
   },
+  { path: 'login', loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule) },
+  // {
+  //   path: 'home',
+  //   loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
+  // },
+    { path: 'home', loadChildren: './pages/home/home.module#HomePageModule' },
+  { path: 'tests', loadChildren: () => import('./pages/tests/tests.module').then( m => m.TestsPageModule) },
+  { path: 'book-content', loadChildren: () => import('./modals/book-content/book-content.module').then( m => m.BookContentPageModule) },
   {
-    path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
-  },
-  {
-    path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
+    path: 'preferencias',
+    loadChildren: () => import('./pages/preferencias/preferencias.module').then( m => m.PreferenciasPageModule)
   }
-    // { path: 'home', loadChildren: './pages/home/home.module#HomePageModule' }
     // { path: 'homedesk', loadChildren: './pages/homedesk/homedesk.module#HomedeskPageModule', canActivate: [AuthGuard] },
 ];
 

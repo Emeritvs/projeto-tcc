@@ -1,6 +1,8 @@
 import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { BooksComponent } from 'src/app/components/books/books.component';
 import { Teladimanica } from 'src/app/interfaces/process/teladinamica';
+import { ComponentsRenderService } from 'src/app/services/components-render.service';
+import { EmitterEventService } from 'src/app/services/emitter-event.service';
 import { ProccessService } from 'src/app/services/proccess.service';
 import { ThemeService } from 'src/app/services/theme.service';
 import { ToasterService } from 'src/app/services/toaster.service';
@@ -12,88 +14,96 @@ import { ToasterService } from 'src/app/services/toaster.service';
 })
 export class HomePage implements OnInit {
 
-  @ViewChild('leftContainer', {  read: ViewContainerRef, static: false })  public esquerdo : ViewContainerRef;
-  @ViewChild('rightContainer', {  read: ViewContainerRef, static: false })  public direito : ViewContainerRef;
+  @ViewChild('leftContainer', {  read: ViewContainerRef, static: true })  public esquerdo : ViewContainerRef;
+  @ViewChild('rightContainer', {  read: ViewContainerRef, static: true })  public direito : ViewContainerRef;
 
   private themeActive : string;
+  private activeTab : string = "Livros";
 
   constructor(
     private theme : ThemeService,
-    private toaster : ToasterService,
+    private components : ComponentsRenderService,
     private resolver: ComponentFactoryResolver,
+    private toaster : ToasterService,
+    private emitter : EmitterEventService
   ) { 
     let active = localStorage.getItem('theme');
-    console.log(active);
-    this.themeActive === active ? this.themeActive = this.themeActive : this.themeActive = active; 
   }
 
   
-  ngOnInit() {
-  }
+  async ngOnInit() {
+    if (this.emitter.subsVar == undefined) {    
+      this.emitter.subsVar = this.emitter.invokeFirstComponentFunction
+      .subscribe((param : any) => {  
+        let data = param.data;
 
-  teste(){
-    this.abrirComponente('D','booksComponent',{});
-  }
-
-  enableDark(){
-    localStorage.setItem('theme', 'dark');
-    this.themeActive = "dark";
-    this.theme.enableDark();
-  }
-
-  enableLight(){
-    localStorage.setItem('theme', 'light');
-    this.themeActive = "light";
-    this.theme.enableLight();
-  }
-
-  private resolveComponentsName(componentName : any) {
-
-    console.log('Resolvendo '+componentName)
-    if (componentName === 'booksComponent') {
-      return BooksComponent;
+        //ABRIR COMPONENTE
+        this.abrirComponente(this.direito, 'D',param.function ,data)
+        .catch(err => {
+          console.log(err);
+          this.toaster.presentToast('Houve um problema ao processar sua solicitação. Tente novamente mais tarde', 'danger',  0);
+        })
+      });    
     }
-    // else if(componentName === 'compatendimentorelatoriooperaaco')
-    // {
-    //   return CompatendimentorelatoriooperaacoComponent
-    // }
-    else
-    {
-      alert('error')
-      return false;
-    }
+
+    await this.abrirComponente(this.esquerdo, 'E','menuComponent',{});
+    await this.abrirComponente(this.direito, 'D','booksComponent',{});
   }
 
-  abrirComponente(container:string,componentName:string,data?:any): Promise<Boolean> {
+  segmentChanged(ev: any) {
+    console.log('Segment changed', ev);
+    let active = ev.detail.value;
+
+    switch (active) {
+      case "livros":
+        this.abrirComponente(this.direito, 'D', 'booksComponent', {});
+        break;
+      case "comics":
+        this.abrirComponente(this.direito, 'D', 'comicsComponent', {});
+        break;  
+      case "documentos":
+        this.abrirComponente(this.direito, 'D', 'documentsComponent', {});
+        break;     
+      case "menu":
+        this.abrirComponente(this.esquerdo, 'E', 'menuComponent', {});
+        break;  
+      default:
+        break;
+    }
+
+    this.activeTab = active;
+  }
+
+  async abrirComponente(element : ViewContainerRef, container:string,componentName:string,data?:any): Promise<Boolean> {
     return new Promise((resolve, reject) => {
           //DEU CERTO O CARREGAMENTO
           this.toaster.presentLoading('Carregando...')
-          .then(res => {
+          .then(async res => {
             res.present();
             try
             {
-              let comp : any = this.resolveComponentsName(componentName);
+              let comp : any = await this.components.resolveComponentsName(componentName);
         
               if(comp != false)
               {
-                console.log('Componente identificado '+componentName);
                 let newItem = new ProccessService(comp, data);
                 const factory = this.resolver.resolveComponentFactory(newItem.component);
 
                 //Criar o componente 
                 if(container == 'D')
                 {
-                  this.direito.clear();
+                  element.clear();
                   console.log('Carregando container D')
-                  let componentRef = this.direito.createComponent(factory);
-                  (<Teladimanica>componentRef.instance).data = newItem.desc;
+                  // let componentRef = this.direito.createComponent(factory);
+                  this.direito.createComponent(factory);
                 }
                 else if(container == 'E')
                 {
                   console.log('Carregando container esquerdo');
-                  this.esquerdo.clear();
-                  let componentRef = this.esquerdo.createComponent(factory);
-                  (<Teladimanica>componentRef.instance).data = newItem.desc;
+                  element.clear();
+                  // let componentRef = this.esquerdo.createComponent(factory);
+                  this.esquerdo.createComponent(factory);
+                  // (<Teladimanica>componentRef.instance).data = newItem.desc;
                 }
                 else
                 {
