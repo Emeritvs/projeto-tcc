@@ -16,10 +16,16 @@ export class ThemeService {
   }
 
   enableDark(){
+    this.renderer.removeClass(this.document.body, 'light-theme');
     this.renderer.addClass(this.document.body, 'dark-theme');
   }
 
   enableLight(){
     this.renderer.removeClass(this.document.body, 'dark-theme');
+    this.renderer.addClass(this.document.body, 'light-theme');
+  }
+
+  async saveTheme(theme : string){
+    localStorage.setItem('theme', theme);
   }
 }

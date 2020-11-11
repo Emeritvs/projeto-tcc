@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Preferências</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-fab class="float-fab-left" vertical="top" horizontal="start" slot="fixed">
+  <ion-fab-button color="secondary" (click)="closeModal()">
+    <ion-icon name="arrow-back-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<ion-content>
+  <!-- <ion-list>
+    <ion-list-header>
+      <ion-label>Cores</ion-label> <ion-icon name="caret-down-outline"></ion-icon>
+    </ion-list-header>
+    <ion-item>
+      <ion-label>Teste</ion-label>
+    </ion-item>
+  </ion-list> -->
+
+  <ion-grid>
+    <ion-list>
+      <ion-list-header>
+        Estilo
+      </ion-list-header>
+
+      <ion-item>
+        <!-- <ion-icon slot="end" name="logo-ionic"></ion-icon> -->
+        <ion-select slot="end" interface="popover">
+          <ion-select-option value="md"><ion-icon name="logo-android"></ion-icon> &nbsp; Android</ion-select-option>
+          <ion-select-option value="ios"><ion-icon name="logo-apple"></ion-icon> &nbsp; iOS</ion-select-option>
+        </ion-select>
+
+        <ion-label>Tema dos elementos da página.</ion-label>
+      </ion-item>
+    </ion-list>
+  
+    <ion-list>
+      <ion-list-header>
+        Cores
+      </ion-list-header>
+      <ion-item>
+        <ion-label>Modo Noturno</ion-label>
+        <ion-note slot="end" color="primary"><ion-toggle [checked]="darkChecked" (ionChange)="darkMode($event)"></ion-toggle></ion-note>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label>Tertiary Note</ion-label>
+        <ion-note slot="end" color="tertiary">99</ion-note>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>Success Note</ion-label>
+        <ion-note slot="end" color="success">99</ion-note>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>Warning Note</ion-label>
+        <ion-note slot="end" color="warning">99</ion-note>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>Danger Note</ion-label>
+        <ion-note slot="end" color="danger">99</ion-note>
+      </ion-item>
+    </ion-list>
+  </ion-grid>
+
+
+</ion-content>

@@ -1,0 +1,31 @@
+<ion-fab vertical="top" horizontal="start">
+  <ion-fab-button color="secondary" (click)="closeModal()">
+      <ion-icon name="close-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<ion-content>
+  <ion-grid>
+    <ion-row style="width: calc( 100vw - 10%);">
+      <ion-col size="12" style="background: #2F5D73; margin: 5%; padding: 40px; border-radius: 10px;">
+        <ion-row>
+          <ion-col size="2">
+            <img src="../../../assets//images/thumbnails/books/{{data.imageLink}}" alt="">
+            <ion-fab-button color="success" style="position: absolute; transform: translate(263%, -80%);" (click)="closeModal()">
+              <ion-icon name="play-outline"></ion-icon>
+            </ion-fab-button>
+          </ion-col>
+
+          <ion-col>
+            <ion-item>
+              <ion-label>
+                <h2>{{data.title}}({{data.year}})</h2>
+                <p>{{data.author}}</p>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

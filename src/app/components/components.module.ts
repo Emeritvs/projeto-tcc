@@ -6,12 +6,14 @@ import { BooksComponent } from './books/books.component';
 import { ComicsComponent } from './comics/comics.component';
 import { DocumentsComponent } from './documents/documents.component';
 import { ItemInfoComponent } from './item-info/item-info.component';
+import { MenuComponent } from './menu/menu.component';
 
 const PAGES_COMPONENTS = [
     BooksComponent,
     ComicsComponent,
     DocumentsComponent,
-    ItemInfoComponent
+    ItemInfoComponent,
+    MenuComponent,
 ];
 
 @NgModule({

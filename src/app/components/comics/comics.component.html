@@ -1,3 +1,20 @@
-<p>
-  comics works!
-</p>
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col size="2" *ngFor="let comic of comics; let i = index">
+                <ion-card (click)="viewBook({data: comic, id: i })">
+                    <ion-card-content>
+                        <div class="thumbnail" style="background-image: url('{{comics.attributes.posterImage.large}}');"></div>
+                        <ion-item lines="none">
+                            <ion-label>
+                                <h2 class="book-title">{{i}} - {{comic.attributes.canonicalTitle}}</h2>
+                                <p></p>
+                            </ion-label>
+                        </ion-item>
+
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

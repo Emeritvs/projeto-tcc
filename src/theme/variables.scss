@@ -75,23 +75,101 @@
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 
-  .dark-theme {
-    --ion-color-dark-primary: #072d3e;
-    --ion-color-primary-rgb: 56, 128, 255;
-    --ion-color-primary-contrast: #ffffff;
-    --ion-color-primary-contrast-rgb: 255, 255, 255;
-    --ion-color-primary-shade: #6e7277;
-    --ion-color-primary-tint: #4c8dff;
-    --ion-color-action-button: #64C7F4;
 
-    ion-content {
-      --background: #072d3e;
-    }
-
-    ion-tabs {
-      --background: #072d3e;
-    }
+  .sc-ion-modal-ios-h {
+    --width: 100vw;
+    --height: 100vh;
   }
+
+    .light-theme {
+      ion-label {
+        color: #072d3e;
+      }
+    }
+
+    .dark-theme {
+      --ion-color-dark-primary: #072d3e;
+      --ion-color-primary-rgb: 56, 128, 255;
+      --ion-color-primary-contrast: #ffffff;
+      --ion-color-primary-contrast-rgb: 255, 255, 255;
+      --ion-color-primary-shade: #6e7277;
+      --ion-color-primary-tint: #4c8dff;
+      --ion-color-action-button: #64C7F4;
+      
+      ion-toolbar {
+        --background: #072d3e;
+        ion-title {
+          color: white;
+        }
+      }
+
+      ion-content {
+        --background: #072d3e;
+      }
+  
+      ion-tabs {
+        --background: #072d3e;
+      }
+  
+      .library-title {
+        color: white;
+      }
+  
+      ion-list {
+        background: #072d3e;
+
+        ion-list-header {
+          color: white;
+        }
+
+        ion-item {
+          --background: #072d3e;
+          color: rgba(255, 255, 255, 0.719);
+        }
+      }
+      
+
+      ion-segment {
+        justify-content: start;
+
+
+        ion-segment-button, ion-segment-button:hover {
+          color: white;
+          --color-checked: white;
+          --color-hover: white;
+        }
+
+        .segment-button-checked {
+          background: #2F5D73;
+          border-radius: 10px;
+          --indicator-color: transparent;
+        }
+  
+        // ion-segment-button ion-label{
+          
+        // }
+      }
+  
+      ion-card {
+        background: #2F5D73;
+  
+        ion-item {
+          --background: #2F5D73;
+  
+          ion-label {
+            h2 {
+              color: white !important;
+              font-weight: bold;
+            }
+  
+            p {
+              color: rgba(255, 255, 255, 0.600);
+            }
+          }
+        }
+      }
+  
+    }
 }
 
 @media (prefers-color-scheme: dark) {
