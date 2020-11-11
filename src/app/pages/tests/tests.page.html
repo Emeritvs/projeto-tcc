@@ -7,34 +7,9 @@
 <ion-content style="width: 100vw; display: flex; justify-content: center; align-items: center;">
   <ion-grid>
     <ion-row>
-      <ion-col #teste>
-
-        <!-- <webcam #videoPlayer (initError)="handleInitError($event)" (click)="startCanvas()"></webcam> -->
+      <ion-col>
         <video #videoPlayer width="800" height="600" autoplay muted></video>
-<!-- 
-        <h2>Detect Face</h2>
-        <img
-          allFaces
-          [src]="imageSrc"
-          width="300px"/>
-        <br/>
-        
-        <h2>With Expressions and Landmarks</h2>
-        <img
-          allFaces [with]="['expressions', 'landmarks']"
-          [src]="imageSrc"
-          width="300px"/>
-        
-        
-        <h2>With Age and Gender</h2>
-        <img
-          allFaces [with]="['landmarks', 'ageAndGender']"
-          [src]="imageSrc"
-          width="300px"/>
-        
-        
-        <h2>Select File</h2>
-        <input type="file" (change)="selectFile($event)"> -->
+        <canvas #oi></canvas>
       </ion-col>
     </ion-row>
   </ion-grid>

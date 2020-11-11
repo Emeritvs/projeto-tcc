@@ -1,11 +1,12 @@
-import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { BooksComponent } from 'src/app/components/books/books.component';
-import { Teladimanica } from 'src/app/interfaces/process/teladinamica';
+import { DOCUMENT } from '@angular/common';
+import { Component, ComponentFactoryResolver, Inject, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Router,  } from '@angular/router';
 import { ComponentsRenderService } from 'src/app/services/components-render.service';
 import { EmitterEventService } from 'src/app/services/emitter-event.service';
 import { ProccessService } from 'src/app/services/proccess.service';
 import { ThemeService } from 'src/app/services/theme.service';
 import { ToasterService } from 'src/app/services/toaster.service';
+import * as faceapi from 'face-api.js';
 
 @Component({
   selector: 'app-home',
@@ -20,13 +21,24 @@ export class HomePage implements OnInit {
   private themeActive : string;
   private activeTab : string = "Livros";
 
+  @ViewChild('videoPlayer') videoplayer : any;
+  @ViewChild('canvasDiv') canvasdiv : any;
+
+  public webcamEl : any;
+  public videoEl: any;
+  public canvas: any
+  private count : number = 0;
+
   constructor(
     private theme : ThemeService,
     private components : ComponentsRenderService,
     private resolver: ComponentFactoryResolver,
     private toaster : ToasterService,
-    private emitter : EmitterEventService
-  ) { 
+    private emitter : EmitterEventService,
+    private router: Router,
+    @Inject(DOCUMENT) private document
+  ) 
+  { 
     let active = localStorage.getItem('theme');
   }
 
@@ -48,6 +60,12 @@ export class HomePage implements OnInit {
 
     await this.abrirComponente(this.esquerdo, 'E','menuComponent',{});
     await this.abrirComponente(this.direito, 'D','booksComponent',{});
+  }
+
+  async ngAfterViewInit() {
+    this.webcamEl = this.videoplayer.nativeElement;
+    this.canvas = this.canvasdiv.nativeElement;
+    this.startVideo();
   }
 
   segmentChanged(ev: any) {
@@ -73,6 +91,11 @@ export class HomePage implements OnInit {
 
     this.activeTab = active;
   }
+
+  acessarSpeech(){
+    this.router.navigate(['/tests/speech-recognition']);
+  }
+
 
   async abrirComponente(element : ViewContainerRef, container:string,componentName:string,data?:any): Promise<Boolean> {
     return new Promise((resolve, reject) => {
@@ -134,6 +157,41 @@ export class HomePage implements OnInit {
           })
           .catch(err => {})
           .finally(()=> {})
+    });
+  }
+
+  //FACE EXPRESSION FUNCTIOJNS
+
+
+  async startVideo(){
+
+    await faceapi.nets.tinyFaceDetector.loadFromUri('assets/models/');
+    await faceapi.nets.faceLandmark68Net.loadFromUri('assets/models/');
+    await faceapi.nets.faceRecognitionNet.loadFromUri('assets/models/');
+    await faceapi.nets.faceExpressionNet.loadFromUri('assets/models/');
+
+    const stream = await navigator.mediaDevices.getUserMedia({ video: {} });
+    this.webcamEl.srcObject = stream;
+
+    this.webcamEl.addEventListener('play', () => {
+
+      const displaySize = { width: this.webcamEl.width, height: this.webcamEl.height };
+
+      faceapi.matchDimensions(this.canvas, displaySize);
+      setInterval(async () => {
+        const detections = await faceapi
+        .detectSingleFace(this.webcamEl, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks()
+        .withFaceExpressions();
+
+        if (detections != undefined) {
+          const resizedDetections = faceapi.resizeResults(detections, displaySize);
+          this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height);
+          faceapi.draw.drawFaceLandmarks(this.canvas, resizedDetections)
+          faceapi.draw.drawFaceExpressions(this.canvas, resizedDetections);
+          faceapi.draw.drawDetections(this.canvas, resizedDetections);
+        }
+
+      }, 100)
     });
   }
 }

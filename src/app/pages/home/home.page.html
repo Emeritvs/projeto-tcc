@@ -1,17 +1,9 @@
-
-
-
-<ion-fab vertical="top" horizontal="start" *ngIf="themeActive == 'light'">
-  <ion-fab-button color="secondary" (click)="enableDark()">
-    <ion-icon name="moon-outline"></ion-icon>
+<ion-fab vertical="top" horizontal="end" slot="fixed" (click)="acessarSpeech()">
+  <ion-fab-button color="primary">
+    <ion-icon name="add-outline"></ion-icon>
   </ion-fab-button>
 </ion-fab>
 
-<ion-fab vertical="top" horizontal="start" *ngIf="themeActive == 'dark'">
-  <ion-fab-button color="secondary" (click)="enableLight()">
-    <ion-icon name="sunny-outline"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
 <ion-content>
 
   <ion-grid>
@@ -44,4 +36,14 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="face-api">
+        <video #videoPlayer width="800" height="600" autoplay muted></video>
+        <canvas #canvasDiv></canvas>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
+
+

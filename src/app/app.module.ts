@@ -9,8 +9,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ComponentsModule } from './components/components.module';
-import { NgxFaceApiJsModule } from 'ngx-face-api-js';
-
+import { SpeechRecognition } from '@ionic-native/speech-recognition/ngx';
 
 @NgModule({
   declarations: [
@@ -18,17 +17,15 @@ import { NgxFaceApiJsModule } from 'ngx-face-api-js';
   ],
   entryComponents: [],
   imports: [
-    BrowserModule, 
-    IonicModule.forRoot(), 
+    BrowserModule,
+    IonicModule.forRoot(),
     AppRoutingModule,
     ComponentsModule,
-    NgxFaceApiJsModule.forRoot({
-      modelsUrl: 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights',
-    })
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    SpeechRecognition,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
